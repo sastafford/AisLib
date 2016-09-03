@@ -29,7 +29,7 @@ subprojects {
         compile "com.marklogic:enav-model:1.0.0"
         compile "com.marklogic:dma-commons-management:1.0.0"
         compile "com.marklogic:dma-commons-util:1.0.0"
-        testCompile "junit:junit:4+"
+        testCompile "junit:junit:4.12"
     }
 
     sourceSets.test.resources.srcDir 'src/test/java'

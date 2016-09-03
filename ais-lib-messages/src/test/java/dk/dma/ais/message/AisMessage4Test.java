@@ -58,8 +58,7 @@ public class AisMessage4Test {
     public void marshallAisMesage4ToXmlTest() throws AisMessageException, SixbitException, SentenceException, JAXBException, ParserConfigurationException, TransformerException {
         Vdm vdm = new Vdm();
         vdm.parse(
-                //"!AIVDM,1,1,,A,402R3WiuH@jaaPtgjhOgcA7000S:,0*7D"
-                "!AIVDM,2,2,6,A,53mgj802=cUo=ThH0008E8LDr1HTdTpL0000001D0aJ996;l0=SCkQlm0A0000000000000,0*34"
+                "!AIVDM,1,1,,A,402R3WiuH@jaaPtgjhOgcA7000S:,0*7D"
         );
         
         AisMessage message = AisMessage.getInstance(vdm);
