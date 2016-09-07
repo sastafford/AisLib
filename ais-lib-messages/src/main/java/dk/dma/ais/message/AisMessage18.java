@@ -154,9 +154,19 @@ public class AisMessage18 extends AisMessage implements IVesselPositionMessage {
         this.pos = new AisPosition();
         this.pos.setRawLongitude(sixbit.getVal(28));
         this.pos.setRawLatitude(sixbit.getVal(27));
-        String temp = Float.toString((float) pos.getRawLatitude()/10000/60);
+        double templat = (double) pos.getRawLatitude()/10000/60;
+        if (templat > 90.0 & templat < 270.0) {
+          templat = 180.0 - templat;
+        } else if (templat > 270.0) {
+          templat = templat - 360.0;
+        }
+        String temp = String.format("%.5g",templat);
         temp += " ";
-        temp += Float.toString((float) pos.getRawLongitude()/10000/60);
+        double templon = (double) pos.getRawLongitude()/10000/60;
+        if (templon>180.0) {
+          templon = templon - 360.0;
+        }
+        temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
 
         String tempdate = ZonedDateTime.now().toString();

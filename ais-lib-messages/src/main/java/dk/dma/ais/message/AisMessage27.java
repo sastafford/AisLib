@@ -98,9 +98,19 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
         this.pos = new AisPosition();
         this.pos.setRawLongitude(binArray.getVal(18));
         this.pos.setRawLatitude(binArray.getVal(17));
-        String temp = Float.toString((float) pos.getRawLatitude()/10000/60);
+        double templat = (double) pos.getRawLatitude()/10000/60;
+        if (templat > 90.0 & templat < 270.0) {
+          templat = 180.0 - templat;
+        } else if (templat > 270.0) {
+          templat = templat - 360.0;
+        }
+        String temp = String.format("%.5g",templat);
         temp += " ";
-        temp += Float.toString((float) pos.getRawLongitude()/10000/60);
+        double templon = (double) pos.getRawLongitude()/10000/60;
+        if (templon>180.0) {
+          templon = templon - 360.0;
+        }
+        temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
         this.pos.set1817();
         String tempdate = ZonedDateTime.now().toString();
