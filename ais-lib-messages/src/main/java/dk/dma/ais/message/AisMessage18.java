@@ -20,6 +20,7 @@ import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 import dk.dma.enav.model.geometry.Position;
 
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -127,6 +128,8 @@ public class AisMessage18 extends AisMessage implements IVesselPositionMessage {
      */
     private int commState; // 19 bits : SOTDMA sync state
 
+    private String datetime;
+
     public AisMessage18() {
         super(18);
     }
@@ -155,6 +158,9 @@ public class AisMessage18 extends AisMessage implements IVesselPositionMessage {
         temp += " ";
         temp += Float.toString((float) pos.getRawLongitude()/10000/60);
         this.pos.setPoint(temp);
+
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
 
         this.cog = (int) sixbit.getVal(12);
         this.trueHeading = (int) sixbit.getVal(9);
@@ -313,9 +319,18 @@ public class AisMessage18 extends AisMessage implements IVesselPositionMessage {
     /**
      * @return the spare
      */
+
+     public String getDatetime() {
+          return datetime;
+     }
+
+     public void setDatetime(String val) {
+         this.datetime = val;
+       }
+
     public int getSpare() {
-        return spare;
-    }
+          return spare;
+      }
 
     /**
      * @param spare

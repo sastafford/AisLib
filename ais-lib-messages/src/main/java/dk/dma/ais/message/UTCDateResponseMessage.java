@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.time.ZonedDateTime;
 
 /**
  * AIS message 4
@@ -54,6 +55,7 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
     private int syncState; // 2 bits : SOTDMA sync state
     private int slotTimeout; // 3 bits : SOTDMA Slot Timeout
     private int subMessage; // 14 bits : SOTDMA sub-message
+    private String datetime;
 
     public UTCDateResponseMessage() {
     }
@@ -90,6 +92,8 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
         temp += " ";
         temp += Float.toString((float) pos.getRawLongitude()/10000/60);
         this.pos.setPoint(temp);
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
 
         this.posType = (int) binArray.getVal(4);
         this.transmissionControl = (int) binArray.getVal(1);
@@ -120,6 +124,14 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
         encoder.addVal(slotTimeout, 3);
         encoder.addVal(subMessage, 14);
         return encoder;
+    }
+
+    public String getDatetime() {
+         return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
     }
 
     public int getUtcYear() {

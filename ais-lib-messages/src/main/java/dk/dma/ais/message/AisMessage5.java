@@ -23,12 +23,15 @@ import dk.dma.ais.binary.SixbitEncoder;
 import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * AIS message 4
- * 
+ *
  * Ship static and voyage related data as defined by ITU-R M.1371-4
- * 
+ *
  */
+@XmlRootElement
 public class AisMessage5 extends AisStaticCommon {
 
     /** serialVersionUID. */
@@ -68,7 +71,7 @@ public class AisMessage5 extends AisStaticCommon {
 
     /**
      * Ship Destination: Maximum 20 characters using 6-bit ASCII;
-     * 
+     *
      * @@@@@@@@@@@@@@@@@@@@ = not available For SAR aircraft, the use of this field may be decided by the responsible
      *                      administration
      */
@@ -169,7 +172,7 @@ public class AisMessage5 extends AisStaticCommon {
 
     /**
      * Get ETA as date object
-     * 
+     *
      * @return date
      */
     public Date getEtaDate() {
@@ -182,14 +185,14 @@ public class AisMessage5 extends AisStaticCommon {
         }
         Calendar cal = Calendar.getInstance();
         cal.setTimeZone(TimeZone.getTimeZone("GMT+0000"));
-        
+
 		cal.set(Calendar.MILLISECOND, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.DAY_OF_MONTH, day);
         cal.set(Calendar.MONTH, mon - 1);
-        
+
         return cal.getTime();
     }
 

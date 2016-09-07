@@ -19,6 +19,7 @@ import dk.dma.ais.binary.SixbitEncoder;
 import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -74,6 +75,8 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
      */
     private int spare; // 1 bit
 
+    private String datetime;
+
     public AisMessage27() {
         super(27);
     }
@@ -100,6 +103,8 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
         temp += Float.toString((float) pos.getRawLongitude()/10000/60);
         this.pos.setPoint(temp);
         this.pos.set1817();
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
         this.sog = (int) binArray.getVal(6);
         this.cog = (int) binArray.getVal(9);
         this.gnssPosStatus = (int) binArray.getVal(1);
@@ -138,6 +143,14 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
 
     public void setRaim(int raim) {
         this.raim = raim;
+    }
+
+    public String getDatetime() {
+         return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
     }
 
     public int getNavStatus() {

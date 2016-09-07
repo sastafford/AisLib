@@ -20,6 +20,7 @@ import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 import dk.dma.enav.model.geometry.Position;
 
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -134,6 +135,8 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
      */
     protected int syncState; // 2 bits
 
+    protected String datetime;
+
     public AisPositionMessage(int msgId) {
         super(msgId);
     }
@@ -162,6 +165,9 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
         temp += " ";
         temp += Float.toString((float) pos.getRawLongitude()/10000/60);
         this.pos.setPoint(temp);
+
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
 
         this.cog = (int) binArray.getVal(12);
         this.trueHeading = (int) binArray.getVal(9);
@@ -350,6 +356,14 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
         this.syncState = syncState;
     }
 
+    public String getDatetime() {
+         return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
+      }
+
     public boolean isPositionValid() {
         Position geo = pos.getGeoLocation();
         return geo != null;
@@ -370,4 +384,5 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
     public boolean isRotValid() {
         return rot > -128;
     }
+
 }
