@@ -20,6 +20,7 @@ import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 import dk.dma.enav.model.geometry.Position;
 
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -134,6 +135,8 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
      */
     protected int syncState; // 2 bits
 
+    protected String datetime;
+
     public AisPositionMessage(int msgId) {
         super(msgId);
     }
@@ -158,10 +161,23 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
         this.pos = new AisPosition();
         this.pos.setRawLongitude(binArray.getVal(28));
         this.pos.setRawLatitude(binArray.getVal(27));
-        String temp = Float.toString((float) pos.getRawLatitude()/10000/60);
+        double templat = (double) pos.getRawLatitude()/10000/60;
+        if (templat > 90.0 & templat < 270.0) {
+          templat = 180.0 - templat;
+        } else if (templat > 270.0) {
+          templat = templat - 360.0;
+        }
+        String temp = String.format("%.5g",templat);
         temp += " ";
-        temp += Float.toString((float) pos.getRawLongitude()/10000/60);
+        double templon = (double) pos.getRawLongitude()/10000/60;
+        if (templon>180.0) {
+          templon = templon - 360.0;
+        }
+        temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
+
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
 
         this.cog = (int) binArray.getVal(12);
         this.trueHeading = (int) binArray.getVal(9);
@@ -350,6 +366,14 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
         this.syncState = syncState;
     }
 
+    public String getDatetime() {
+         return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
+      }
+
     public boolean isPositionValid() {
         Position geo = pos.getGeoLocation();
         return geo != null;
@@ -370,4 +394,5 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
     public boolean isRotValid() {
         return rot > -128;
     }
+
 }

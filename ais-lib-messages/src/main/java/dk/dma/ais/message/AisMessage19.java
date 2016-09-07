@@ -20,12 +20,16 @@ import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 import dk.dma.enav.model.geometry.Position;
 
+import java.time.ZonedDateTime;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * AIS message 19
- * 
+ *
  * Extended Class B equipment position report as defined by ITU-R M.1371-4
- * 
+ *
  */
+@XmlRootElement
 public class AisMessage19 extends AisStaticCommon implements IVesselPositionMessage {
 
     /** serialVersionUID. */
@@ -105,6 +109,8 @@ public class AisMessage19 extends AisStaticCommon implements IVesselPositionMess
      */
     private int spare3; // 4 bits
 
+    private String datetime;
+
     public AisMessage19() {
         super(19);
     }
@@ -129,6 +135,24 @@ public class AisMessage19 extends AisStaticCommon implements IVesselPositionMess
         this.pos = new AisPosition();
         this.pos.setRawLongitude(sixbit.getVal(28));
         this.pos.setRawLatitude(sixbit.getVal(27));
+        double templat = (double) pos.getRawLatitude()/10000/60;
+        if (templat > 90.0 & templat < 270.0) {
+          templat = 180.0 - templat;
+        } else if (templat > 270.0) {
+          templat = templat - 360.0;
+        }
+        String temp = String.format("%.5g",templat);
+        temp += " ";
+        double templon = (double) pos.getRawLongitude()/10000/60;
+        if (templon>180.0) {
+          templon = templon - 360.0;
+        }
+        temp += String.format("%.5g",templon);
+        this.pos.setPoint(temp);
+
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
+
         this.cog = (int) sixbit.getVal(12);
         this.trueHeading = (int) sixbit.getVal(9);
         this.utcSec = (int) sixbit.getVal(6);
@@ -216,6 +240,15 @@ public class AisMessage19 extends AisStaticCommon implements IVesselPositionMess
         builder.append(spare3);
         builder.append("]");
         return builder.toString();
+    }
+
+
+    public String getDatetime() {
+         return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
     }
 
     public int getSpare1() {

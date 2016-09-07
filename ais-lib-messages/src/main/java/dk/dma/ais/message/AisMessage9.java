@@ -19,6 +19,7 @@ import dk.dma.ais.binary.SixbitEncoder;
 import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 
+import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -145,6 +146,8 @@ public class AisMessage9 extends AisMessage implements IPositionMessage {
      */
     private int subMessage; // 14 bits
 
+    private String datetime;
+
     public AisMessage9() {
         super(9);
     }
@@ -169,6 +172,23 @@ public class AisMessage9 extends AisMessage implements IPositionMessage {
         this.pos = new AisPosition();
         this.pos.setRawLongitude(binArray.getVal(28));
         this.pos.setRawLatitude(binArray.getVal(27));
+        double templat = (double) pos.getRawLatitude()/10000/60;
+        if (templat > 90.0 & templat < 270.0) {
+          templat = 180.0 - templat;
+        } else if (templat > 270.0) {
+          templat = templat - 360.0;
+        }
+        String temp = String.format("%.5g",templat);
+        temp += " ";
+        double templon = (double) pos.getRawLongitude()/10000/60;
+        if (templon>180.0) {
+          templon = templon - 360.0;
+        }
+        temp += String.format("%.5g",templon);
+        this.pos.setPoint(temp);
+
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
 
         this.cog = (int) binArray.getVal(12);
         this.utcSec = (int) binArray.getVal(6);
@@ -282,6 +302,14 @@ public class AisMessage9 extends AisMessage implements IPositionMessage {
 
     public void setCog(int cog) {
         this.cog = cog;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
     }
 
     public int getUtcSec() {

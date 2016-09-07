@@ -33,11 +33,9 @@ public class AisPosition implements Serializable{
 
     private long rawLongitude;
     private double resolution = 10000.0;
-//    private AisPoint point;
     private String point;
 
     public AisPosition() {
-      // this.point = new AisPoint(100, 100, 10000.0);
     }
 
     /**
@@ -49,13 +47,6 @@ public class AisPosition implements Serializable{
     public AisPosition(long rawLatitude, long rawLongitude) {
         this.rawLatitude = rawLatitude;
         this.rawLongitude = rawLongitude;
-        //this.point = new AisPoint(100, 100, 10000.0);
-        //setPoint();
-
-
-        // this.point += String.valueOf(rawLatitude);
-        // this.point += " ";
-        // this.point += String.valueOf(rawLongitude);
     }
 
     /**
@@ -66,25 +57,15 @@ public class AisPosition implements Serializable{
     public AisPosition(Position location) {
         setLatitude(Math.round(location.getLatitude() * resolution * 60.0));
         setLongitude(Math.round(location.getLongitude() * resolution * 60.0));
-//        setPoint();
-        // this.point = new String();
-        //
-        // this.point += String.valueOf(location.getLatitude());
-        // this.point += " ";
-        // this.point += String.valueOf(location.getLongitude());
-
     }
 
-
     public void setPoint(String val) {
-//      this.point = new AisPoint(rawLatitude,rawLongitude,resolution);
-    this.point = val;
+        this.point = val;
 
     }
 
     public String getPoint() {
-//      return point.getPoint();
-return point;
+        return point;
     }
 
 

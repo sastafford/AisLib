@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.time.ZonedDateTime;
 
 /**
  * AIS message 4
@@ -54,6 +55,7 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
     private int syncState; // 2 bits : SOTDMA sync state
     private int slotTimeout; // 3 bits : SOTDMA Slot Timeout
     private int subMessage; // 14 bits : SOTDMA sub-message
+    private String datetime;
 
     public UTCDateResponseMessage() {
     }
@@ -86,10 +88,22 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
         this.pos = new AisPosition();
         this.pos.setRawLongitude(binArray.getVal(28));
         this.pos.setRawLatitude(binArray.getVal(27));
-        String temp = Float.toString((float) pos.getRawLatitude()/10000/60);
+        double templat = (double) pos.getRawLatitude()/10000/60;
+        if (templat > 90.0 & templat < 270.0) {
+          templat = 180.0 - templat;
+        } else if (templat > 270.0) {
+          templat = templat - 360.0;
+        }
+        String temp = String.format("%.5g",templat);
         temp += " ";
-        temp += Float.toString((float) pos.getRawLongitude()/10000/60);
+        double templon = (double) pos.getRawLongitude()/10000/60;
+        if (templon>180.0) {
+          templon = templon - 360.0;
+        }
+        temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
+        String tempdate = ZonedDateTime.now().toString();
+        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
 
         this.posType = (int) binArray.getVal(4);
         this.transmissionControl = (int) binArray.getVal(1);
@@ -120,6 +134,14 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
         encoder.addVal(slotTimeout, 3);
         encoder.addVal(subMessage, 14);
         return encoder;
+    }
+
+    public String getDatetime() {
+         return datetime;
+    }
+
+    public void setDatetime(String val) {
+        this.datetime = val;
     }
 
     public int getUtcYear() {
