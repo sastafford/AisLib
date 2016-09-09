@@ -20,6 +20,7 @@ import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.Vdm;
 import dk.dma.enav.model.geometry.Position;
 
+import java.time.format.DateTimeFormatter;
 import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -176,8 +177,10 @@ public abstract class AisPositionMessage extends AisMessage implements IVesselPo
         temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
 
-        String tempdate = ZonedDateTime.now().toString();
-        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
+        ZonedDateTime date = ZonedDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String text = date.format(formatter);
+        this.setDatetime(text);
 
         this.cog = (int) binArray.getVal(12);
         this.trueHeading = (int) binArray.getVal(9);
