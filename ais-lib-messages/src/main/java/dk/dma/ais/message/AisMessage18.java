@@ -154,7 +154,7 @@ public class AisMessage18 extends AisMessage implements IVesselPositionMessage {
         this.pos = new AisPosition();
         this.pos.setRawLongitude(sixbit.getVal(28));
         this.pos.setRawLatitude(sixbit.getVal(27));
-        double templat = (double) pos.getRawLatitude()/10000/60;
+        double templat = (double) pos.getLatitude()/10000/60;
         if (templat > 90.0 & templat < 270.0) {
           templat = 180.0 - templat;
         } else if (templat > 270.0) {
@@ -162,7 +162,7 @@ public class AisMessage18 extends AisMessage implements IVesselPositionMessage {
         }
         String temp = String.format("%.5g",templat);
         temp += " ";
-        double templon = (double) pos.getRawLongitude()/10000/60;
+        double templon = (double) pos.getLongitude()/10000/60;
         if (templon>180.0) {
           templon = templon - 360.0;
         }
