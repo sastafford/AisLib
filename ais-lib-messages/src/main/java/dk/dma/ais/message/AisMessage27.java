@@ -21,6 +21,7 @@ import dk.dma.ais.sentence.Vdm;
 
 import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.time.format.DateTimeFormatter;
 
 /**
  * AIS message 27
@@ -113,8 +114,10 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
         temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
         this.pos.set1817();
-        String tempdate = ZonedDateTime.now().toString();
-        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
+        ZonedDateTime date = ZonedDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String text = date.format(formatter);
+        this.setDatetime(text);
         this.sog = (int) binArray.getVal(6);
         this.cog = (int) binArray.getVal(9);
         this.gnssPosStatus = (int) binArray.getVal(1);

@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * AIS message 4
@@ -102,8 +103,10 @@ public abstract class UTCDateResponseMessage extends AisMessage implements IPosi
         }
         temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
-        String tempdate = ZonedDateTime.now().toString();
-        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
+        ZonedDateTime date = ZonedDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String text = date.format(formatter);
+        this.setDatetime(text);
 
         this.posType = (int) binArray.getVal(4);
         this.transmissionControl = (int) binArray.getVal(1);

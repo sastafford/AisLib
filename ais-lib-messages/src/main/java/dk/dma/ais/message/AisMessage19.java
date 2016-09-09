@@ -22,6 +22,7 @@ import dk.dma.enav.model.geometry.Position;
 
 import java.time.ZonedDateTime;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.time.format.DateTimeFormatter;
 
 /**
  * AIS message 19
@@ -150,8 +151,10 @@ public class AisMessage19 extends AisStaticCommon implements IVesselPositionMess
         temp += String.format("%.5g",templon);
         this.pos.setPoint(temp);
 
-        String tempdate = ZonedDateTime.now().toString();
-        this.setDatetime(tempdate.substring(0,tempdate.indexOf('[')));
+        ZonedDateTime date = ZonedDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String text = date.format(formatter);
+        this.setDatetime(text);
 
         this.cog = (int) sixbit.getVal(12);
         this.trueHeading = (int) sixbit.getVal(9);
