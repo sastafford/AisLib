@@ -98,7 +98,7 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
         this.pos = new AisPosition();
         this.pos.setRawLongitude(binArray.getVal(18));
         this.pos.setRawLatitude(binArray.getVal(17));
-        double templat = (double) pos.getRawLatitude()/10000/60;
+        double templat = (double) pos.getLatitude()/10000/60;
         if (templat > 90.0 & templat < 270.0) {
           templat = 180.0 - templat;
         } else if (templat > 270.0) {
@@ -106,7 +106,7 @@ public class AisMessage27 extends AisMessage implements IPositionMessage {
         }
         String temp = String.format("%.5g",templat);
         temp += " ";
-        double templon = (double) pos.getRawLongitude()/10000/60;
+        double templon = (double) pos.getLongitude()/10000/60;
         if (templon>180.0) {
           templon = templon - 360.0;
         }
