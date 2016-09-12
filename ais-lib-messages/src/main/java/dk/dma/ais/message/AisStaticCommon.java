@@ -34,7 +34,7 @@ public abstract class AisStaticCommon extends AisMessage implements IDimensionMe
 
     /**
      * Ship name: Maximum 20 characters 6 bit ASCII, as defined in Table 44
-     * 
+     *
      * @@@@@@@@@@@@@@@@@@@@ = not available = default. For SAR aircraft, it should be set to "SAR AIRCRAFT NNNNNNN"
      *                      where NNNNNNN equals the aircraft registration number
      */
@@ -49,7 +49,7 @@ public abstract class AisStaticCommon extends AisMessage implements IDimensionMe
     /**
      * GPS Ant. Distance from bow (A): Reference point for reported position. Also indicates the dimension of ship (m)
      * (see Fig. 42 and § 3.3.3)
-     * 
+     *
      * NOTE: When GPS position is not available, but the ships dimensions is available, then this field should be 0
      */
     protected int dimBow; // 9 bits
@@ -57,7 +57,7 @@ public abstract class AisStaticCommon extends AisMessage implements IDimensionMe
     /**
      * GPS Ant. Distance from stern (B) Reference point for reported position. Also indicates the dimension of ship (m)
      * (see Fig. 42 and § 3.3.3)
-     * 
+     *
      * NOTE: When GPS position is not available, but the ships dimensions is available, then this field should be
      * representing the length of the ship
      */
@@ -66,7 +66,7 @@ public abstract class AisStaticCommon extends AisMessage implements IDimensionMe
     /**
      * GPS Ant. Distance from port (C) Reference point for reported position. Also indicates the dimension of ship (m)
      * (see Fig. 42 and § 3.3.3)
-     * 
+     *
      * NOTE: When GPS position is not available, but the ships dimensions is available, then this field should be 0
      */
     protected int dimPort; // 6 bits
@@ -74,11 +74,13 @@ public abstract class AisStaticCommon extends AisMessage implements IDimensionMe
     /**
      * GPS Ant. Distance from starboard (D): Reference point for reported position. Also indicates the dimension of ship
      * (m) (see Fig. 42 and § 3.3.3)
-     * 
+     *
      * NOTE: When GPS position is not available, but the ships dimensions is available, then this field should be
      * representing the with of the ship
      */
     protected int dimStarboard; // 6 bits
+
+    protected int shipLength;
 
     public AisStaticCommon(int msgId) {
         super(msgId);
@@ -144,4 +146,11 @@ public abstract class AisStaticCommon extends AisMessage implements IDimensionMe
         this.dimStarboard = dimStarboard;
     }
 
+    public int getShipLength() {
+        return shipLength;
+    }
+
+    public void setShipLength(int shipLength) {
+        this.shipLength = shipLength;
+    }
 }

@@ -37,8 +37,6 @@ public class AisMessage5 extends AisStaticCommon {
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    int shipLength;
-
     /**
      * AIS version indicator: 0 = station compliant with Recommendation ITU-R M.1371-1 1 = station compliant with
      * Recommendation ITU-R M.1371-3 2-3 = station compliant with future editions
@@ -151,14 +149,6 @@ public class AisMessage5 extends AisStaticCommon {
 
     public void setVersion(int version) {
         this.version = version;
-    }
-
-    public int getShipLength() {
-        return this.shipLength;
-    }
-
-    public void setShipLength(int shipLength) {
-        this.shipLength = shipLength;
     }
 
     public long getImo() {
