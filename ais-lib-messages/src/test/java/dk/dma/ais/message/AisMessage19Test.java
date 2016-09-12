@@ -4,6 +4,14 @@ import dk.dma.ais.binary.SixbitException;
 import dk.dma.ais.sentence.SentenceException;
 import dk.dma.ais.sentence.Vdm;
 import org.junit.Test;
+import org.w3c.dom.Document;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -62,6 +70,23 @@ public class AisMessage19Test {
 //        assertEquals(0, ((AisMessage19) message).getSpare2());
 //        assertEquals(0, ((AisMessage19) message).getSpare3());
 
+    }
+    
+    @Test
+    public void marshalAisMessage19Test() throws AisMessageException, SixbitException, SentenceException, JAXBException, ParserConfigurationException {
+        Vdm vdm = new Vdm();
+        vdm.parse("!AIVDM,1,1,,B,C5N3SRgPEnJGEBT>NhWAwwo862PaLELTBJ:V00000000S0D:R220,0*0B");
+        AisMessage message = AisMessage.getInstance(vdm);
+        assertTrue(message instanceof AisMessage19);
+        AisMessage19 msg19 = (AisMessage19) message;
+        JAXBContext jc = JAXBContext.newInstance(AisMessage19.class);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.newDocument();
+        Marshaller m = jc.createMarshaller();
+        System.out.println("marshal");
+        m.marshal( msg19, System.out );
     }
 
 }

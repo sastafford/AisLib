@@ -21,6 +21,9 @@ import dk.dma.ais.sentence.Vdm;
  */
 public abstract class AisStaticCommon extends AisMessage implements IDimensionMessage, INameMessage {
 
+    public AisStaticCommon() {
+    }
+
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
