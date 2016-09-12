@@ -36,8 +36,6 @@ public class AisMessage19 extends AisStaticCommon implements IVesselPositionMess
     /** serialVersionUID. */
     private static final long serialVersionUID = 1L;
 
-    private int shipLength;
-
     /**
      * Reserved for definition by a competent regional or local authority. Should be set to zero, if not used for any
      * regional or local application. Regional applications should not use zero.
@@ -246,15 +244,6 @@ public class AisMessage19 extends AisStaticCommon implements IVesselPositionMess
         builder.append(spare3);
         builder.append("]");
         return builder.toString();
-    }
-
-
-    public int getShipLength() {
-        return this.shipLength;
-    }
-
-    public void setShipLength(int shipLength) {
-        this.shipLength = shipLength;
     }
 
     public String getDatetime() {
